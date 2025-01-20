@@ -1,0 +1,14 @@
+# Cyber security framework
+
+## Cybersecurity KPI Metrics: Primary Performance Indicators for Security Infrastructure
+Cybersecurity Key Performance Indicators (KPIs) serve as fundamental measurements for evaluating and quantifying the robustness of an organization's security infrastructure and defensive capabilities. These essential metrics encompass several critical categories that provide comprehensive visibility into security operations. Primary metrics include detailed tracking of Intrusion Attempts (which monitors and categorizes all unauthorized access attempts across various system entry points), Malicious Traffic Proportion (a sophisticated analysis of network traffic patterns to determine the percentage and nature of potentially harmful activity), Incident Detection Rate (comprehensive measurement of the percentage of security threats successfully identified by monitoring systems), Mean Time to Detect/Mean Time to Respond (MTTD/MTTR, which measures both the average duration required to identify security incidents and the subsequent response time), and Data Breach Volume (detailed assessment of the quantity and sensitivity of any compromised information).
+
+## Secondary Cybersecurity KPIs and Compliance Metrics
+Secondary but equally vital KPIs incorporate Patch Compliance (systematic tracking of system updates and security patch implementation across the infrastructure), False Positive/Negative Rates (detailed analysis of security tool accuracy, including both incorrect threat identifications and missed genuine threats), User Awareness Metrics (comprehensive evaluation of security training effectiveness through various measures, including but not limited to phishing test results and security protocol adherence), and Vulnerability Management (systematic tracking of identified vulnerabilities and their remediation progress, with particular emphasis on critical security gaps).
+
+## Key Cybersecurity Metrics and Performance Indicators
+The security framework is further strengthened by monitoring metrics related to Privileged Access Management (tracking and controlling high-level system access), Endpoint Protection (measuring the security status of all connected devices), Regulatory Compliance (ensuring adherence to relevant security standards and regulations), and Cost of Incidents (detailed analysis of both direct and indirect financial impacts of security events). Through systematic monitoring and analysis of these comprehensive KPIs, organizations can effectively strengthen their security posture, enhance defensive capabilities, and maintain regulatory compliance standards.
+
+## Our current metrics
+- Intrusion Attempts
+- Incident Detection Rate
