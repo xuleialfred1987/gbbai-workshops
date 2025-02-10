@@ -1,4 +1,4 @@
-# Multi-Agent Workshop
+# MultiAgent CyberSecurity Lab
 
 Welcome to the **Multi-Agent Workshop** repository! This workshop is designed to help participants explore and gain hands-on experience with Azure AI tools and agents. Whether you are a beginner or an expert in AI, this workshop will guide you through the exciting world of Azure AI, from foundational concepts to advanced multi-agent systems.
 
