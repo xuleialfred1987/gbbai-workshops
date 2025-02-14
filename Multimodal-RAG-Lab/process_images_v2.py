@@ -149,7 +149,7 @@ def crop_image_from_file(file_path, page_number, bounding_box):
 async def upload_file(file_path: str, containerName: str, file_prefix: str):
     try:
         # Initialize the BlobServiceClient with the connection string
-        async with BlobServiceClient.from_connection_string(os.getenv("AzureWebJobsStorage")) as storage_client:
+        async with BlobServiceClient.from_connection_string(os.getenv("AZURE_STORAGE_CONNECTION_STRING")) as storage_client:
             blob_container_client = storage_client.get_container_client(
                 containerName)
 
@@ -262,7 +262,7 @@ def update_figure_description(md_content: str, img_description: str, idx: int, c
     figure_positions = find_figure_positions(md_content)
 
     storage_account = ""
-    match = re.search(r'AccountName=([^;]+)', os.getenv("AzureWebJobsStorage"))
+    match = re.search(r'AccountName=([^;]+)', os.getenv("AZURE_STORAGE_CONNECTION_STRING"))
     if match:
         storage_account = match.group(1)
     else:
