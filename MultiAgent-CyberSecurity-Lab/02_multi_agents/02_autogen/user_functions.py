@@ -123,7 +123,7 @@ def analyze_data(file_path: str,
             return "./figures/Intrusion_Attempts_forecast_plot.png"
         else:
             return "./figures/Incident_Detection_Rate_anomalies_plot.png"
-
+    
     nixtla_client = NixtlaClient(
         base_url=os.getenv("TIME_GEN_ENDPOINT"),
         api_key=os.getenv("TIME_GEN_KEY"),
@@ -179,8 +179,8 @@ def analyze_data(file_path: str,
             elif method == "anomaly_detection":
                 anomalies_df = nixtla_client.detect_anomalies(
                     df,
-                    time_col="timestamp",
-                    target_col="value",
+                    time_col="ds",
+                    target_col="y",
                     freq="D",
                 )
                 anomalies_df = anomalies_df.rename(columns={
@@ -190,7 +190,7 @@ def analyze_data(file_path: str,
                 })
 
                 fig = nixtla_client.plot(
-                    df, anomalies_df, time_col="timestamp", target_col="value")
+                    df, anomalies_df, time_col="ds", target_col="y")
 
                 ax = fig.axes[0]
                 ax.legend(["Actual Values", "TimeGPT", "TimeGPT_level_99", "TimeGPT_anomalies_level_99"],
