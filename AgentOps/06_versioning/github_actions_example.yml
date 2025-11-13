@@ -1,0 +1,139 @@
+name: Agent CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'agents/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'agents/**'
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+    
+    env:
+      AZURE_AI_PROJECT_ENDPOINT: ${{ secrets.AZURE_AI_PROJECT_ENDPOINT }}
+      AZURE_COSMOS_ENDPOINT: ${{ secrets.AZURE_COSMOS_ENDPOINT }}
+      AZURE_OPENAI_ENDPOINT_GPT_4o: ${{ secrets.AZURE_OPENAI_ENDPOINT_GPT_4o }}
+      AZURE_OPENAI_API_KEY_GPT_4o: ${{ secrets.AZURE_OPENAI_API_KEY_GPT_4o }}
+      AZURE_OPENAI_API_VERSION_GPT_4o: ${{ secrets.AZURE_OPENAI_API_VERSION_GPT_4o }}
+      AZURE_OPENAI_MODEl_GPT_4o: ${{ secrets.AZURE_OPENAI_MODEl_GPT_4o }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install azure-ai-projects azure-identity azure-cosmos azure-ai-evaluation python-dotenv
+      
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: Update Agent Configuration
+        id: update
+        run: |
+          cd 17_agent_ops/06_versioning
+          python agent_cicd_cli.py update \
+            --agent-id ${{ secrets.AGENT_ID }} \
+            --config agents/production_config.json \
+            --description "Automated update from CI/CD pipeline" \
+            --changed-by "github-actions"
+      
+      - name: Run Agent Evaluation
+        id: evaluate
+        run: |
+          cd 17_agent_ops/06_versioning
+          python agent_cicd_cli.py evaluate \
+            --agent-id ${{ secrets.AGENT_ID }} \
+            --test-queries agents/test_queries.json \
+            --output evaluation_results.json
+      
+      - name: Upload Evaluation Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: evaluation-results
+          path: 17_agent_ops/06_versioning/evaluation_results.json
+      
+      - name: Check Evaluation Scores
+        run: |
+          cd 17_agent_ops/06_versioning
+          # Extract average score from evaluation results
+          AVG_SCORE=$(python -c "import json; data=json.load(open('evaluation_results.json')); print(data['summary']['average_score'])")
+          echo "Average evaluation score: $AVG_SCORE"
+          
+          # Fail if score is below threshold
+          if (( $(echo "$AVG_SCORE < 3.0" | bc -l) )); then
+            echo "❌ Evaluation score below threshold (3.0)"
+            exit 1
+          else
+            echo "✅ Evaluation passed"
+          fi
+      
+      - name: Rollback on Failure
+        if: failure()
+        run: |
+          cd 17_agent_ops/06_versioning
+          # Get current version
+          CURRENT_VERSION=$(python -c "
+          import sys
+          sys.path.insert(0, '../01_agent')
+          sys.path.insert(0, '.')
+          from agent_version_manager import AgentVersionManager
+          from agent_db import AgentDB
+          vm = AgentVersionManager(AgentDB())
+          print(vm.get_current_version_number('${{ secrets.AGENT_ID }}'))
+          ")
+          
+          # Rollback to previous version
+          PREV_VERSION=$((CURRENT_VERSION - 1))
+          python agent_cicd_cli.py rollback \
+            --agent-id ${{ secrets.AGENT_ID }} \
+            --version $PREV_VERSION \
+            --description "Auto-rollback due to evaluation failure" \
+            --changed-by "github-actions"
+      
+      - name: Post Summary
+        if: always()
+        run: |
+          echo "## Agent CI/CD Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f 17_agent_ops/06_versioning/evaluation_results.json ]; then
+            echo "### Evaluation Results" >> $GITHUB_STEP_SUMMARY
+            python -c "
+          import json
+          data = json.load(open('17_agent_ops/06_versioning/evaluation_results.json'))
+          print(f\"- **Version**: {data['version']}\")
+          print(f\"- **Average Score**: {data['summary']['average_score']:.2f}\")
+          print(f\"- **Total Tests**: {data['summary']['total_tests']}\")
+          print(f\"- **Min Score**: {data['summary']['min_score']:.2f}\")
+          print(f\"- **Max Score**: {data['summary']['max_score']:.2f}\")
+          " >> $GITHUB_STEP_SUMMARY
+          fi
+      
+      - name: Notify on Slack
+        if: always()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: |
+            Agent CI/CD Pipeline ${{ job.status }}
+            Agent: ${{ secrets.AGENT_ID }}
+            Commit: ${{ github.sha }}
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}

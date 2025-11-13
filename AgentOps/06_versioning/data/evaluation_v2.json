@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "timestamp": "2025-11-12T12:20:35.486023Z",
+  "test_query": "What are the latest developments in generative AI this month?",
+  "intent_resolution": {
+    "score": 5.0,
+    "pass": null,
+    "reason": "User wanted the latest developments in generative AI this month. Agent provided a detailed, relevant, and up-to-date summary of tools, applications, and trends, fully addressing the user's intent with no notable gaps."
+  },
+  "tool_call_accuracy": {
+    "score": "N/A",
+    "pass": "N/A"
+  },
+  "task_adherence": {
+    "score": null,
+    "pass": null,
+    "reason": null
+  }
+}
