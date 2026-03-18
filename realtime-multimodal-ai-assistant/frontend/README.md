@@ -1,16 +1,17 @@
-## Notice
-This is a reconstructed version of GBB/AI Platform
+## Frontend
 
-## NODE.JS
+This frontend powers the realtime multimodal AI assistant experience in this repository.
 
-- Node 16.x || 18.x
+## Node.js
 
-## USING YARN (Recommend)
+- Node 18.x recommended
+
+## Using Yarn
 
 - yarn install
 - yarn dev
 
-## USING NPM
+## Using npm
 
-- npm i OR npm i --legacy-peer-deps
+- npm install
 - npm run dev
