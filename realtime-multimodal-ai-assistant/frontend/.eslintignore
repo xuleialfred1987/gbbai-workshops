@@ -1,0 +1,12 @@
+// Build artifacts and generated files
+build/*
+dist/*
+public/*
+**/out/*
+
+// Third-party dependencies
+**/node_modules/*
+
+// Configuration files
+vite.config.js
+vite.config.ts

@@ -1,0 +1,54 @@
+{
+  "compilerOptions": {
+    // JavaScript target and environment
+    "target": "es2015",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable"
+    ],
+
+    // Type checking strictness
+    "strict": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": false,
+    
+    // Module resolution options
+    "baseUrl": ".",
+    "paths": {
+      "corner-smoothing": ["node_modules/corner-smoothing/dist/esm/index.d.ts"]
+    },
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    
+    // Output behavior
+    "noEmit": true,
+    
+    // Other options
+    "allowJs": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  
+  "include": [
+    "src/**/*",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  
+  "exclude": [
+    "node_modules"
+  ],
+  
+  "references": [
+    { "path": "./tsconfig.node.json" }
+  ]
+}

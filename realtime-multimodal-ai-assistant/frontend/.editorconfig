@@ -1,0 +1,16 @@
+# Top-most EditorConfig file
+root = true
+
+# Universal settings for all files
+[*]
+# Character encoding
+charset = utf-8
+
+# Line endings
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Indentation settings
+indent_style = space
+indent_size = 2

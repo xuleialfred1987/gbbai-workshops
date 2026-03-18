@@ -1,0 +1,15 @@
+# Output directories
+build/*
+dist/*
+public/*
+
+# Generated directories
+**/out/*
+**/.next/*
+
+# Dependencies
+**/node_modules/*
+
+# Lock files
+package-lock.json
+yarn.lock

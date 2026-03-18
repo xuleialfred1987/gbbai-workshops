@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Node Configuration",
+  "compilerOptions": {
+    "moduleResolution": "Node",
+    "module": "ESNext",
+    "allowSyntheticDefaultImports": true,
+    "composite": true,
+    "skipLibCheck": true,
+    "target": "ES2020"
+  },
+  "files": [],
+  "include": [
+    "vite.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

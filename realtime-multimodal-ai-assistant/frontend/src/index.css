@@ -1,0 +1,71 @@
+/* Importing styles for various libraries */
+@import 'simplebar-react/dist/simplebar.min.css'; /* Custom scrollbar styles */
+@import 'react-lazy-load-image-component/src/effects/blur.css'; /* Lazy loading image effect */
+@import 'slick-carousel/slick/slick.css'; /* Base styles for Slick carousel */
+@import 'slick-carousel/slick/slick-theme.css'; /* Theme styles for Slick carousel */
+@import 'yet-another-react-lightbox/styles.css'; /* Base styles for lightbox */
+@import 'yet-another-react-lightbox/plugins/captions.css'; /* Caption styles for lightbox */
+@import 'yet-another-react-lightbox/plugins/thumbnails.css'; /* Thumbnail styles for lightbox */
+
+/* Custom styles for various elements */
+.ace-tm .ace_gutter,
+.ace-github .ace_gutter,
+.ace-twilight .ace_gutter {
+    background: none;
+}
+
+.ace-tm .ace_gutter {
+    color: #2E718A;
+}
+
+.ace-tm .ace_gutter-active-line,
+.ace-twilight .ace_gutter-active-line {
+    background: none;
+    font-weight: bold;
+}
+
+.ace-tomorrow-night-bright .ace_gutter {
+    background: none;
+    color: #919EAB;
+}
+
+.ace-tomorrow-night-bright .ace_gutter-active-line {
+    background: none;
+    font-weight: bold;
+}
+
+.snackbar-content {
+    display: flex;
+    align-items: center;
+    max-width: 440px;
+    padding: 16px 10px 4px 16px;
+}
+
+.snackbar-content svg {
+    flex-shrink: 0; /* Prevent the icon from shrinking */
+    margin: 10px
+}
+
+.snackbar-content button {
+    margin-right: 6px; 
+}
+
+.snackbar-content button svg {
+    flex-shrink: 0;
+    margin: 2px;
+    
+}
+
+.canvas-container {
+    width: '100%';
+    height: '100%';
+    border: solid 1px #e0e0e0;
+}
+
+.canvas-container image {
+    border: solid 1px #e0e0e0;
+}
+
+iframe html body .fui-FluentProviderr0 {
+    --colorNeutralBackground1: none;
+}

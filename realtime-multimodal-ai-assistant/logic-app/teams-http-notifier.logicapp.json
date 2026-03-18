@@ -1,0 +1,115 @@
+{
+  "definition": {
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "contentVersion": "1.0.0.0",
+    "triggers": {
+      "When_an_HTTP_request_is_received": {
+        "type": "Request",
+        "kind": "Http",
+        "inputs": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "imageUrl": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "message"
+            ]
+          }
+        }
+      }
+    },
+    "actions": {
+      "Condition_Check_If_Image_Provided": {
+        "actions": {
+          "Post_card_in_a_chat_or_channel": {
+            "type": "ApiConnection",
+            "inputs": {
+              "host": {
+                "connection": {
+                  "name": "@parameters('$connections')['teams']['connectionId']"
+                }
+              },
+              "method": "post",
+              "body": {
+                "recipient": "alerts@contoso.com",
+                "messageBody": "{\n  \"type\": \"AdaptiveCard\",\n  \"body\": [\n    {\n      \"type\": \"TextBlock\",\n      \"size\": \"Large\",\n      \"weight\": \"Bolder\",\n      \"text\": \"@{if(empty(triggerBody()?['title']), 'Message', triggerBody()?['title'])}\"\n    },\n    {\n      \"type\": \"TextBlock\",\n      \"text\": \"@{triggerBody()?['message']}\",\n      \"wrap\": true\n    },\n    {\n      \"type\": \"Image\",\n      \"url\": \"@{triggerBody()?['imageUrl']}\"\n    }\n  ],\n  \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\n  \"version\": \"1.4\"\n}"
+              },
+              "path": "/v1.0/teams/conversation/adaptivecard/poster/Flow bot/location/@{encodeURIComponent('Chat with Flow bot')}"
+            }
+          }
+        },
+        "runAfter": {},
+        "else": {
+          "actions": {
+            "Post_message_in_a_chat_or_channel": {
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['teams']['connectionId']"
+                  }
+                },
+                "method": "post",
+                "body": {
+                  "recipient": "alerts@contoso.com",
+                  "messageBody": "<p class=\"editor-paragraph\">@{triggerBody()?['message']}</p>"
+                },
+                "path": "/beta/teams/conversation/message/poster/Flow bot/location/@{encodeURIComponent('Chat with Flow bot')}"
+              }
+            }
+          }
+        },
+        "expression": {
+          "and": [
+            {
+              "not": {
+                "equals": [
+                  "@triggerBody()?['imageUrl']",
+                  "@null"
+                ]
+              }
+            },
+            {
+              "not": {
+                "equals": [
+                  "@triggerBody()?['imageUrl']",
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        "type": "If"
+      }
+    },
+    "outputs": {},
+    "parameters": {
+      "$connections": {
+        "type": "Object",
+        "defaultValue": {}
+      }
+    }
+  },
+  "parameters": {
+    "$connections": {
+      "type": "Object",
+      "value": {
+        "teams": {
+          "id": "/subscriptions/<subscription-id>/providers/Microsoft.Web/locations/<location>/managedApis/teams",
+          "connectionId": "/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Web/connections/teams",
+          "connectionName": "teams",
+          "connectionProperties": {}
+        }
+      }
+    }
+  }
+}
