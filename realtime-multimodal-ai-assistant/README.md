@@ -55,10 +55,6 @@ npm run dev
 
 ## Screenshots
 
-### Intent and grounding
-
-![Intent grounding](docs/intent-grounding.png)
-
 ### Live agent transfer
 
 ![Live agent transfer](docs/live-agent-transfer.png)
