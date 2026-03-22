@@ -13,5 +13,7 @@ This frontend powers the realtime multimodal AI assistant experience in this rep
 
 ## Using npm
 
-- npm install
+- npm install --legacy-peer-deps
 - npm run dev
+
+This project still depends on a few older peer dependency combinations, so npm install should be run with `--legacy-peer-deps`.

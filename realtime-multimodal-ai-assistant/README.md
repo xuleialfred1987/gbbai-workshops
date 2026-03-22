@@ -43,9 +43,11 @@ If you prefer npm:
 
 ```bash
 cd frontend
-npm install
+npm install --legacy-peer-deps
 npm run dev
 ```
+
+The frontend currently includes some older package combinations, so npm may require `--legacy-peer-deps` during install.
 
 ## Additional docs
 
